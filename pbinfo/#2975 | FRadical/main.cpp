@@ -4,7 +4,8 @@ void FRadical(int n, int &x, int &y){
     m = x * x;
     if(m == n){
         y = 1;
-    } else {
+    } 
+    else{
         while(n % m != 0){
             --x;
             m = x * x;
