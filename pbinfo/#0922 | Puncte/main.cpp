@@ -5,7 +5,7 @@
 using namespace std;
 int n;
 int main(){
-    std::cin >> n;
+    cin >> n;
     int nrApar = 0;
     double dist, distMax = 0;
     while(n--){
