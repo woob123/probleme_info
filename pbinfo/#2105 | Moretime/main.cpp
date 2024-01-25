@@ -1,63 +1,45 @@
-#include <fstream>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
-int rest[10001];
 ifstream fin("moretime.in");
 ofstream fout("moretime.out");
-struct cont{
-    int cod, time;
-}v[10001];
-bool cont_premium(int a){
-    int uc = a%10;
-    while(a > 10)
-        a/= 10;
-    if(a == uc)
-        return true;
-    return false;
-}
-bool cresc(cont a, cont b){
-    return a.time < b.time;
+int n,a[10005],b[100005],fr[100003],p;
+pair<int,int> c[100005];
+int Premium(int n){
+    if(n%10==0) return 0;
+    int x;
+    x=n%10;
+    while(n>9)
+        n=n/10;
+    if(x==n) return 1;
+    return 0;
 }
 int main(){
-    int n;
-    fin >> n;
-    cont prem[10001];
-    int k = 1;
-    for(int i = 1; i <= n; i++){
-        fin >> v[i].cod >> v[i].time;
-        if(cont_premium(v[i].cod)){
-            prem[k].cod = v[i].cod;
-            prem[k].time = v[i].time;
-            k++;
+    int x,y,s=0,s1,ct=0;
+    fin>>n;
+    for(int i=1; i<=n; i++){
+        fin>>x>>y;
+        if(Premium(x)){
+            a[++p]=x;
+            b[p]=y;
         }
     }
-    k--;
-    fout << k << '\n';
-
-    int s1 = 0, s2 = 0;
-    int sum[10001];
-    for(int i = 1; i <= k; i++){
-        for(int j = 1; j <= i; j++){
-            sum[i] = sum[i-1] + prem[j].time;
-        }
-        if(sum[i] % k == 0){
-            for(int j = 1; j <= i; j++)
-                fout << prem[j].cod << " ";
-        }
-        int r = sum[i]%k;
-        if(rest[r] != 0){
-            s1 = rest[r];
-            s2 = i;
-        }
-        else{
-            rest[r] = i;
-        }
-        if(s1 != 0 && s2 != 0){
-            break;
-        }
+    fout<<p<<"\n";
+    for(int i=1; i<=p; i++){
+        s+=b[i]%p;
+        c[i]={b[i]%p,a[i]};
     }
-    fout << s2-s1 << endl;
-    for(int i = s1+1; i <= s2; i++){
-        fout << prem[i].cod << " ";
-    }
+    s1=(s/p)*p;
+    sort(c+1, c+p+1);
+    for(int i=p; i>=1 && s>s1; i--)
+        if(s-c[i].first>=s1){
+            s-=c[i].first;
+            ct++;
+            fr[c[i].second]++;
+        }
+    fout<<p-ct<<"\n";
+    for(int i=1; i<=p; i++)
+        if(fr[a[i]]==0) fout<<a[i]<<" ";
+    fin.close();
+    fout.close();
+    return 0;
 }
