@@ -24,8 +24,7 @@ int main(){
       c[var++] = vin[i++];
    while (j != m)
       c[var++] = vim[j++];
-   for (i=0; i<var; i+=10)
-   {
+   for (i=0; i<var; i+=10){
       for (j=i; j<i+10 and j<var; j++)
          cout << c[j] << ' ';
       cout << '\n';
