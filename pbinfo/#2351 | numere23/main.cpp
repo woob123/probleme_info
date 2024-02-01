@@ -1,69 +1,52 @@
 #include <fstream>
 using namespace std;
-ifstream fin("numere23.in");
-ofstream fout("numere23.out");
-int numere[10001];
-int b[10001];
-int n;
-void stergere(int val){
-    for(int i = val; i < n; i++){
-        numere[i] = numere[i+1];
-    } 
-}
-bool prim3(int n){
-    if(n < 2) return false;
-    int nr = 0;
-    int d = 2;
-    while(n > 1 && nr <= 3){
-        while(n%d == 0){
-            nr++;
+int n, k, c, v[10005];
+int prim3(int n){
+    if (n<2) return false;
+    int d=2, nr = 0;
+    while (n!=1 && nr<=3){
+        while (n%d==0 && nr<=3){
             n/=d;
+            nr++;
         }
         d++;
     }
-    if(n == 1 && nr <= 3) return true;
-    return false;
+    if (n==1 && nr<=3) return 1;
+    return 0;
 }
 int main(){
-    int k, c;
-    fin >> n >> k >> c;
-    int val = 1;
-    int p = 1;
-    int cn = n;
-    while(cn){
-        if(prim3(val)){ 
-            cn--;
-            numere[p++] = val;
+    ifstream fin("numere23.in");
+    ofstream fout("numere23.out");
+    fin>>n>>k>>c;
+    if (c==1){
+        int val = 1;
+        while (n){
+            val++;
+            if (prim3(val)) n--;
         }
-        val++;
-    }
-    val--;
-    if(c == 1){
-        fout << val;
+        fout<<val;
     }
     else{
-        int i = 1;
-        int j = 1;
-        int cn = n;
-        while(n){
-            fout << i << " " << j << endl;
-            b[j] = numere[i];
-            for(int l = 1; l <= n; l++){
-                fout << numere[l] << " ";
+        int val = 1, poz = 1, cn=n;
+        while (!prim3(val)) val++;
+        v[1]=val;
+        cn--;
+        while (cn){
+            while (!prim3(++val));
+            int ck = k;
+            ck = k;
+            while (ck){
+                poz++;
+                if (poz>n) poz = poz%n;
+                if (v[poz] == 0)
+                {
+                    ck--;
+                }
             }
-            fout << '\n';
-            stergere(i);
-            n--;
-
-            if(j + k > n){
-                j = ((j+k)-cn)+1;
-            }
-            else{
-                j += k;
-            }
+            v[poz]=val;
+            cn--;
         }
-        for(int l = 1; l <= cn; l++){
-            fout << b[l] << " ";
-        }
+        for (int i=1; i<=n; i++)
+            fout<<v[i]<<" ";
     }
 }
