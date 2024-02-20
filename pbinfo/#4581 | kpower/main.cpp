@@ -24,10 +24,6 @@ bool kpower(long long a, short int p) {
 int main() {
     fin >> c;
     fin >> k >> n;
-    if(k == 7 && n == 1000000 && c == 3){
-        fout << 11308331643217;
-        return 0;
-    }
     if (c == 1) {
         for (int i = 1; i <= n; i++) {
             fin >> x;
@@ -58,18 +54,30 @@ int main() {
             if (kpower(x, k))
                 l++;
             else {
-                if (l >= lmax) {
+                if (l > lmax) {
                     lmax = l;
                     dr = i - 1;
                     st = i - lmax;
+                    smax = s[dr] - s[st-1];
+                    if ((s[dr] - s[st - 1]) >= smax)
+                        smax = s[dr] - s[st - 1];
+                }
+                if(l == lmax){
                     if ((s[dr] - s[st - 1]) >= smax)
                         smax = s[dr] - s[st - 1];
                 }
                 l = 0;
             }
         }
-        if (l >= lmax) {
+        if (l > lmax) {
             lmax = l;
+            dr = n;
+            st = n - lmax + 1;
+            smax = s[dr] - s[st-1];
+            if ((s[dr] - s[st - 1]) >= smax)
+                smax = s[dr] - s[st - 1];
+        }
+        if(l == lmax){
             dr = n;
             st = n - lmax + 1;
             if ((s[dr] - s[st - 1]) >= smax)
